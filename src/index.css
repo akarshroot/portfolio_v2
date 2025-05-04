@@ -1,10 +1,28 @@
-body {
+html, body {
   margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --night: #121619ff;
+  --mountbatten-pink: #a288a6ff;
+  --rose-quartz: #bb9bb0ff;
+  --silver: #ccbcbcff;
+  --lavender-blush: #f1e3e4ff;
+}
+
+#root {
+  height: 100%;
+  overflow: hidden;
 }
 
 code {
