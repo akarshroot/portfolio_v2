@@ -25,7 +25,6 @@ function App() {
     </pre>
   );
 
-  // Structured data for SEO
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -41,7 +40,17 @@ function App() {
       "React",
       "TypeScript",
       "JavaScript",
-      "Machine Learning"
+      "Machine Learning",
+      "Backend",
+      "Node js",
+      "Python",
+      "Java",
+      "Nest js",
+      "FastAPI",
+      "Microseervices",
+      "Kubernetes",
+      "Azure",
+      "Docker",
     ]
   };
 
@@ -58,6 +67,9 @@ function App() {
           initialCommands={[
             "Hi! I'm",
             isSmallScreen ? TERMINAL_CONSTANTS.BANNER_FALLBACK : asciiBanner,
+            "a software development engineer primarily focussed at backend development",
+            "begin typing to learn more about me.",
+            "If you're cluless type /help and press enter or tap the 'Help' button",
           ]} 
           prompt={TERMINAL_CONSTANTS.DEFAULT_PROMPT}
         />
