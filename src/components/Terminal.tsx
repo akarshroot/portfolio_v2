@@ -98,30 +98,30 @@ const Terminal: React.FC<TerminalProps> = ({
     // Add command response (simulated)
     if (cmd.trim()) {
       switch(cmd.trim()) {
-        case "/help":
+        case "help":
           newHistory.push(
             "Available commands:",
-            "- /help: Show this help message",
-            "- /about: Learn about me",
-            "- /resume: Get link to my resume",
-            "- /contact: Get my contact information",
-            "- /clear: Clear terminal",
+            "- help: Show this help message",
+            "- about: Learn about me",
+            "- resume: Get link to my resume",
+            "- contact: Get my contact information",
+            "- clear: Clear terminal",
           );
           break;
-        case "/clear":
+        case "clear":
           newHistory = ["Cleared terminal."];
           break;
-        case "/resume":
+        case "resume":
           newHistory.push("View my resume at https://drive.google.com/file/d/1PzfaGtLDuKhgaCHQtriOLcUsidCFIj8T/view?usp=drive_link");
           break;
-        case "/about":
+        case "about":
           newHistory.push(
             "I'm Akarsh Tripathi, a software engineer specializing in backend development.",
             "Check out my GitHub: https://github.com/akarshroot",
             "LinkedIn: https://linkedin.com/in/akarshtripathi-tech"
           );
           break;
-        case "/contact":
+        case "contact":
           newHistory.push(
             "Email: work.akarshtripathi@gmail.com",
             "LinkedIn: https://linkedin.com/in/akarshtripathi-tech",
@@ -174,7 +174,17 @@ const Terminal: React.FC<TerminalProps> = ({
 
   const handleHelpClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent terminal click handler
-    executeCommand("/help");
+    executeCommand("help");
+  }, [executeCommand]);
+  
+  const handleContactClick = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent terminal click handler
+    executeCommand("contact");
+  }, [executeCommand]);
+  
+  const handleResumeClick = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent terminal click handler
+    executeCommand("resume");
   }, [executeCommand]);
   
   // Render a history item with clickable links
@@ -207,13 +217,27 @@ const Terminal: React.FC<TerminalProps> = ({
         {getVisibleHistory().map((line, i) => renderHistoryItem(line, i))}
       </div>
       
-      <div className="mt-2 mb-2 flex justify-start">
+      <div className="mt-2 mb-2 flex justify-start space-x-2">
         <button 
           className="px-3 py-1 bg-green-700 text-black rounded hover:bg-green-600 focus:outline-none cursor-pointer"
           onClick={handleHelpClick}
           aria-label="Show help commands"
         >
           Help
+        </button>
+        <button 
+          className="px-3 py-1 bg-green-700 text-black rounded hover:bg-green-600 focus:outline-none cursor-pointer"
+          onClick={handleContactClick}
+          aria-label="Show contact information"
+        >
+          Contact
+        </button>
+        <button 
+          className="px-3 py-1 bg-green-700 text-black rounded hover:bg-green-600 focus:outline-none cursor-pointer"
+          onClick={handleResumeClick}
+          aria-label="Show resume link"
+        >
+          Resume
         </button>
       </div>
       
