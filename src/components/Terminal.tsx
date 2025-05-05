@@ -202,7 +202,8 @@ const Terminal: React.FC<TerminalProps> = ({
   
   return (
     <section 
-      className="bg-black text-green-500 font-mono p-4 rounded-md overflow-y-auto flex flex-col h-full"
+      className="bg-night text-lavender-blush font-mono p-4 rounded-md overflow-y-auto flex flex-col h-full"
+      style={{ backgroundColor: 'var(--night)', color: 'var(--lavender-blush)' }}
       ref={terminalRef}
       onClick={handleClick}
       aria-label="Interactive Terminal"
@@ -219,21 +220,42 @@ const Terminal: React.FC<TerminalProps> = ({
       
       <div className="mt-2 mb-2 flex justify-start space-x-2">
         <button 
-          className="px-3 py-1 bg-green-700 text-black rounded hover:bg-green-600 focus:outline-none cursor-pointer"
+          className="px-3 py-1 rounded hover:bg-lavender-blush focus:outline-none cursor-pointer"
+          style={{ 
+            backgroundColor: 'var(--mountbatten-pink)', 
+            color: 'var(--night)',
+            transition: 'background-color 0.3s ease'
+          }}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--rose-quartz)'}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'var(--mountbatten-pink)'}
           onClick={handleHelpClick}
           aria-label="Show help commands"
         >
           Help
         </button>
         <button 
-          className="px-3 py-1 bg-green-700 text-black rounded hover:bg-green-600 focus:outline-none cursor-pointer"
+          className="px-3 py-1 rounded hover:bg-lavender-blush focus:outline-none cursor-pointer"
+          style={{ 
+            backgroundColor: 'var(--mountbatten-pink)', 
+            color: 'var(--night)',
+            transition: 'background-color 0.3s ease'
+          }}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--rose-quartz)'}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'var(--mountbatten-pink)'}
           onClick={handleContactClick}
           aria-label="Show contact information"
         >
           Contact
         </button>
         <button 
-          className="px-3 py-1 bg-green-700 text-black rounded hover:bg-green-600 focus:outline-none cursor-pointer"
+          className="px-3 py-1 rounded hover:bg-lavender-blush focus:outline-none cursor-pointer"
+          style={{ 
+            backgroundColor: 'var(--mountbatten-pink)', 
+            color: 'var(--night)',
+            transition: 'background-color 0.3s ease'
+          }}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--rose-quartz)'}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'var(--mountbatten-pink)'}
           onClick={handleResumeClick}
           aria-label="Show resume link"
         >

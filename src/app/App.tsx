@@ -67,7 +67,7 @@ function App() {
           initialCommands={[
             "Hi! I'm",
             isSmallScreen ? TERMINAL_CONSTANTS.BANNER_FALLBACK : asciiBanner,
-            "a software development engineer primarily focussed at backend development",
+            "a software development engineer primarily focussed at backend development and architechture design",
             "begin typing to learn more about me.",
             "If you're cluless type /help and press enter or tap the 'Help' button",
           ]} 

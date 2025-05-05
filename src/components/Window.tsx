@@ -1,4 +1,5 @@
 import React, { ReactNode, useEffect, useState } from 'react'
+import './Window.css'
 
 interface WindowProps {
   children?: ReactNode;
@@ -39,9 +40,9 @@ function Window({ children }: WindowProps) {
         className="border border-gray-100/20 shadow-2xl rounded-tl-lg rounded-tr-lg flex flex-col"
         style={{ height: windowHeight, width: windowWidth }}
       >
-        <div className="py-2 px-2 border-b border-gray-100/20 rounded-tl-md rounded-tr-md flex items-center relative z-10">
+        <div className="py-2 px-2 border-b border-gray-100/20 rounded-tl-md rounded-tr-md flex justify-end items-center relative z-10">
           <div className="absolute top-0 left-0 bottom-0 w-14 border-r border-gray-100/20"></div>
-          <button className="relative z-10 ml-1">Menu</button>
+          <button className="button-48" role="button"><span className="text">Blog</span></button>
         </div>
         <div className="flex flex-1 relative -mt-px overflow-hidden">
           <div className="w-14 border-r border-gray-100/20 self-stretch">
