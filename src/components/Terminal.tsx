@@ -6,23 +6,56 @@ interface TerminalProps {
   prompt?: string;
 }
 
+// Helper function to detect and convert URLs to clickable links
+const formatTextWithLinks = (text: string) => {
+  // URL regex pattern
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  
+  // If no URLs in text, return the original text
+  if (!urlRegex.test(text)) {
+    return text;
+  }
+  
+  // Split text by URLs and create an array of text and link elements
+  const parts = text.split(urlRegex);
+  const matches = text.match(urlRegex) || [];
+  
+  return (
+    <>
+      {parts.map((part, i) => {
+        // Even indices are text, odd indices are where URLs were
+        if (i % 2 === 0) {
+          return part;
+        } else {
+          const url = matches[(i - 1) / 2];
+          return (
+            <a 
+              key={i}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:underline"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {url}
+            </a>
+          );
+        }
+      })}
+    </>
+  );
+};
+
 const Terminal: React.FC<TerminalProps> = ({ 
   initialCommands = [], 
   prompt = TERMINAL_CONSTANTS.DEFAULT_PROMPT 
 }) => {
-  console.log('Terminal rendering with history length:', initialCommands.length);
-  
   const [history, setHistory] = useState<(string | React.ReactNode)[]>(initialCommands);
   const [currentCommand, setCurrentCommand] = useState<string>("");
   const [cursorPosition, setCursorPosition] = useState<number>(0);
   const terminalRef = useRef<HTMLDivElement>(null);
   const historyContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const renderCount = useRef<number>(0);
-  
-  // Increment render count on each render
-  renderCount.current += 1;
-  console.log(`Terminal render #${renderCount.current}`);
   
   // Calculate effective history size, counting banner as multiple lines
   const getEffectiveHistorySize = useCallback(() => {
@@ -37,23 +70,17 @@ const Terminal: React.FC<TerminalProps> = ({
         size += 1;
       }
     }
-    console.log('Effective history size:', size);
     return size;
   }, [history]);
 
   useEffect(() => {
-    console.log('Terminal mounted or history changed');
-    console.log('Current history:', history);
-    
     if (terminalRef.current) {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
-      console.log('Scrolled terminal to bottom');
     }
     
     // Trim history if it gets too long
     const effectiveSize = getEffectiveHistorySize();
     if (effectiveSize > TERMINAL_CONSTANTS.MAX_VISIBLE_HISTORY * 2) {
-      console.log('History too long, trimming...');
       // Trim history while preserving banner if present
       const newHistory = [...history];
       let trimCount = 0;
@@ -61,38 +88,51 @@ const Terminal: React.FC<TerminalProps> = ({
         newHistory.shift();
         trimCount++;
       }
-      console.log(`Trimmed ${trimCount} items from history`);
       setHistory(newHistory);
     }
   }, [history, getEffectiveHistorySize]);
 
   const executeCommand = useCallback((cmd: string) => {
-    console.log(`Executing command: "${cmd}"`);
     let newHistory = [...history, `${prompt}${cmd}`];
     
     // Add command response (simulated)
     if (cmd.trim()) {
       switch(cmd.trim()) {
         case "/help":
-          console.log('Executing help command');
           newHistory.push(
             "Available commands:",
             "- /help: Show this help message",
             "- /about: Learn about me",
             "- /resume: Get link to my resume",
-            "- /contact: Get my contact information"
+            "- /contact: Get my contact information",
+            "- /clear: Clear terminal",
           );
           break;
         case "/clear":
-          console.log('Executing clear command');
           newHistory = ["Cleared terminal."];
+          break;
+        case "/resume":
+          newHistory.push("View my resume at https://drive.google.com/file/d/1PzfaGtLDuKhgaCHQtriOLcUsidCFIj8T/view?usp=drive_link");
+          break;
+        case "/about":
+          newHistory.push(
+            "I'm Akarsh Tripathi, a software engineer specializing in backend development.",
+            "Check out my GitHub: https://github.com/akarshroot",
+            "LinkedIn: https://linkedin.com/in/akarshtripathi-tech"
+          );
+          break;
+        case "/contact":
+          newHistory.push(
+            "Email: work.akarshtripathi@gmail.com",
+            "LinkedIn: https://linkedin.com/in/akarshtripathi-tech",
+            "GitHub: https://github.com/akarshroot"
+          );
           break;
         default:
           newHistory.push(`${cmd}? What do you mean? I don't understand everything yet. Use /help`);
       }
     }
     
-    console.log('Setting new history with length:', newHistory.length);
     setHistory(newHistory);
     setCurrentCommand("");
     setCursorPosition(0);
@@ -100,7 +140,6 @@ const Terminal: React.FC<TerminalProps> = ({
 
   // Calculate which items to display based on effective history size
   const getVisibleHistory = useCallback(() => {
-    console.log('Calculating visible history');
     const result = [];
     let effectiveSize = 0;
     
@@ -119,7 +158,6 @@ const Terminal: React.FC<TerminalProps> = ({
       }
     }
     
-    console.log(`Visible history: ${result.length} items, effective size: ${effectiveSize}`);
     return result;
   }, [history]);
 
@@ -131,17 +169,26 @@ const Terminal: React.FC<TerminalProps> = ({
   }, [currentCommand, executeCommand]);
 
   const handleClick = useCallback(() => {
-    console.log('Terminal clicked, focusing input');
     inputRef.current?.focus();
   }, []);
 
   const handleHelpClick = useCallback((e: React.MouseEvent) => {
-    console.log('Help button clicked');
     e.stopPropagation(); // Prevent terminal click handler
     executeCommand("/help");
   }, [executeCommand]);
-
-  console.log('Terminal rendering UI');
+  
+  // Render a history item with clickable links
+  const renderHistoryItem = useCallback((line: string | React.ReactNode, index: number) => {
+    if (React.isValidElement(line)) {
+      return <div key={index}>{line}</div>;
+    }
+    
+    return (
+      <pre key={index} className="whitespace-pre-wrap break-all m-0 font-inherit">
+        {typeof line === 'string' ? formatTextWithLinks(line) : line}
+      </pre>
+    );
+  }, []);
   
   return (
     <section 
@@ -157,16 +204,7 @@ const Terminal: React.FC<TerminalProps> = ({
         style={{ maxHeight: 'calc(100% - 80px)' }}
         aria-live="polite"
       >
-        {getVisibleHistory().map((line, i) => {
-          console.log(`Rendering history item ${i}`);
-          return (
-            React.isValidElement(line) ? 
-              <div key={i}>{line}</div> : 
-              <pre key={i} className="whitespace-pre-wrap break-all m-0 font-inherit">
-                {line}
-              </pre>
-          );
-        })}
+        {getVisibleHistory().map((line, i) => renderHistoryItem(line, i))}
       </div>
       
       <div className="mt-2 mb-2 flex justify-start">
@@ -208,15 +246,10 @@ const Terminal: React.FC<TerminalProps> = ({
 Terminal.displayName = 'Terminal';
 
 export default React.memo(Terminal, (prevProps, nextProps) => {
-  console.log('Terminal memo comparison');
-  console.log('Prev props:', prevProps);
-  console.log('Next props:', nextProps);
-  
   // Only re-render if props actually changed
   const propsEqual = 
     prevProps.prompt === nextProps.prompt && 
     prevProps.initialCommands?.length === nextProps.initialCommands?.length;
   
-  console.log(`Terminal will ${propsEqual ? 'NOT' : ''} re-render`);
   return propsEqual;
 });
