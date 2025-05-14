@@ -129,7 +129,7 @@ const Terminal: React.FC<TerminalProps> = ({
           );
           break;
         default:
-          newHistory.push(`${cmd}? What do you mean? I don't understand everything yet. Use /help`);
+          newHistory.push(`${cmd}? What do you mean? I don't understand everything yet. Use help`);
       }
     }
     
