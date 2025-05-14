@@ -202,7 +202,7 @@ const Terminal: React.FC<TerminalProps> = ({
   
   return (
     <section 
-      className="bg-night text-lavender-blush font-mono p-4 rounded-md overflow-y-auto flex flex-col h-full"
+      className="bg-night text-lavender-blush font-mono p-4 rounded-md overflow-y-auto flex flex-col h-full text-left"
       style={{ backgroundColor: 'var(--night)', color: 'var(--lavender-blush)' }}
       ref={terminalRef}
       onClick={handleClick}
