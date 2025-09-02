@@ -1,11 +1,28 @@
 import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Window from '../components/Window';
 import Terminal from '../components/Terminal';
+import BlogListing from './pages/BlogListing';
+import BlogCategory from './pages/BlogCategory';
+import BlogPost from '../components/BlogPost';
 import { ASCII_BANNER, TERMINAL_CONSTANTS } from '../constants/terminal';
 import { Helmet } from 'react-helmet';
 
 function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/blogs" element={<BlogListing />} />
+        <Route path="/blogs/:category" element={<BlogCategory />} />
+        <Route path="/blogs/:category/:slug" element={<BlogPost />} />
+      </Routes>
+    </Router>
+  );
+}
+
+function Home() {
   const [isSmallScreen, setIsSmallScreen] = useState(true);
 
   useEffect(() => {

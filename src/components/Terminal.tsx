@@ -83,10 +83,8 @@ const Terminal: React.FC<TerminalProps> = ({
     if (effectiveSize > TERMINAL_CONSTANTS.MAX_VISIBLE_HISTORY * 2) {
       // Trim history while preserving banner if present
       const newHistory = [...history];
-      let trimCount = 0;
       while (getEffectiveHistorySize() > TERMINAL_CONSTANTS.MAX_VISIBLE_HISTORY && newHistory.length > 0) {
         newHistory.shift();
-        trimCount++;
       }
       setHistory(newHistory);
     }
@@ -105,6 +103,7 @@ const Terminal: React.FC<TerminalProps> = ({
             "- about: Learn about me",
             "- resume: Get link to my resume",
             "- contact: Get my contact information",
+            "- blog: View my blog posts",
             "- clear: Clear terminal",
           );
           break;
@@ -127,6 +126,11 @@ const Terminal: React.FC<TerminalProps> = ({
             "LinkedIn: https://linkedin.com/in/akarshtripathi-tech",
             "GitHub: https://github.com/akarshroot"
           );
+          break;
+        case "blog":
+          newHistory.push("Opening blog... Visit /blogs to see all my technical articles!");
+          // In a real implementation, you might want to trigger navigation here
+          window.location.href = '/blogs';
           break;
         default:
           newHistory.push(`${cmd}? What do you mean? I don't understand everything yet. Use help`);
@@ -207,7 +211,6 @@ const Terminal: React.FC<TerminalProps> = ({
       ref={terminalRef}
       onClick={handleClick}
       aria-label="Interactive Terminal"
-      role="region"
     >
       <div 
         className="flex-1 overflow-y-auto" 
