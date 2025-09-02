@@ -1,6 +1,7 @@
 import { BlogPost, BlogCategory } from '../types/blog';
 
-export const blogCategories: BlogCategory[] = [
+export const blogCategories: BlogCategory[] = []
+export const blogCategoriesDummy: BlogCategory[] = [
   {
     id: '1',
     name: 'Backend Development',
@@ -33,7 +34,8 @@ export const blogCategories: BlogCategory[] = [
   }
 ];
 
-export const blogPosts: BlogPost[] = [
+export const blogPosts: BlogPost[] = []
+export const blogPostsDummy: BlogPost[] = [
   {
     id: '1',
     title: 'Building Scalable REST APIs with Node.js and Express',
